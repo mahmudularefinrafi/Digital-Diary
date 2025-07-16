@@ -1,184 +1,175 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Digital Diary</title>
-<style>
-  body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #f5f7fa;
-    color: #333;
-    margin: 0;
-    padding: 0;
-  }
-  body.dark {
-    background: #121212;
-    color: #eee;
-  }
-  .container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 10px;
-  }
-  .card {
-    background: #fff;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  }
-  body.dark .card {
-    background: #1f1f1f;
-  }
-  .hidden {
-    display: none;
-  }
-  .center {
-    max-width: 400px;
-    margin: 100px auto;
-    text-align: center;
-  }
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  input, select, textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 16px;
-    margin-bottom: 10px;
-    border: 1px solid #dcdfe3;
-    background: #fff;
-    color: #333;
-  }
-  body.dark input,
-  body.dark select,
-  body.dark textarea {
-    background: #2c2c2c;
-    color: #eee;
-    border: 1px solid #444;
-  }
-  textarea {
-    height: 150px;
-    resize: vertical;
-  }
-  button {
-    padding: 10px 20px;
-    margin: 10px 5px 0 0;
-    border: none;
-    border-radius: 8px;
-    background-color: #3498db;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  button:hover {
-    background-color: #2980b9;
-  }
-  ul#entries {
-    list-style: none;
-    padding: 0;
-  }
-  ul#entries li {
-    background: #ecf0f1;
-    padding: 12px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    white-space: pre-wrap;
-  }
-  body.dark ul#entries li {
-    background: #2e2e2e;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Digital Diary</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 0;
+      font-size: 18px;
+      line-height: 1.6;
+      color: #333;
+    }
+    body.dark {
+      background: #121212;
+      color: #eee;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 15px;
+    }
+    .card {
+      background: #fff;
+      padding: 25px;
+      margin: 20px 0;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    body.dark .card {
+      background: #1e1e1e;
+    }
+    .hidden {
+      display: none;
+    }
+    .center {
+      max-width: 400px;
+      margin: 80px auto;
+      text-align: center;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    body.dark input, body.dark textarea, body.dark select {
+      background: #2a2a2a;
+      color: white;
+      border: 1px solid #555;
+    }
+    textarea {
+      resize: vertical;
+      height: 180px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #3498db;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      margin-right: 10px;
+      margin-top: 10px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    ul#entries {
+      list-style: none;
+      padding: 0;
+    }
+    ul#entries li {
+      background: #f1f1f1;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      white-space: pre-wrap;
+    }
+    body.dark ul#entries li {
+      background: #2e2e2e;
+    }
+  </style>
 </head>
 <body>
-  <!-- Lock Screen -->
+
   <div id="lock-screen" class="card center">
-    <h2 id="pin-msg">🔐 Enter your PIN</h2>
-    <input type="password" id="pin-input" placeholder="Enter PIN" />
+    <h2 id="pin-msg">🔐 আপনার পিন দিন</h2>
+    <input type="password" id="pin-input" placeholder="PIN লিখুন" />
     <button onclick="checkPIN()">Unlock</button>
   </div>
 
-  <!-- Main App -->
   <div id="app" class="container hidden">
     <div class="header">
       <h1>📝 Digital Diary</h1>
-      <button onclick="toggleDarkMode()">🌓</button>
-    </div>
-
-    <div class="card">
-      <label for="entry-date">📅 Date</label>
-      <input type="date" id="entry-date" />
-      
-      <label for="mood">🧠 Mood</label>
-      <select id="mood">
-        <option value="">😐 Choose Mood</option>
-        <option value="😊">😊 Happy</option>
-        <option value="😢">😢 Sad</option>
-        <option value="😡">😡 Angry</option>
-        <option value="😴">😴 Tired</option>
-      </select>
-      
-      <label for="entry-text">✍️ Your Entry</label>
-      <textarea id="entry-text" placeholder="Start writing your thoughts..."></textarea>
-
       <div>
-        <button onclick="saveEntry()">💾 Save</button>
-        <button onclick="exportEntries()">⬇️ Export (.txt)</button>
-        <button onclick="exportPDF()">📄 Export PDF</button>
+        <button onclick="toggleDarkMode()">🌗</button>
+        <button onclick="requestNotification()">🔔</button>
       </div>
     </div>
 
     <div class="card">
-      <h2>📚 Past Entries</h2>
-      <input type="text" id="search-box" placeholder="🔍 Search by date or mood" oninput="filterEntries()" />
+      <label for="entry-date">📅 তারিখ</label>
+      <input type="date" id="entry-date" />
+
+      <label for="mood">😊 মুড</label>
+      <select id="mood">
+        <option value="">-- বেছে নিন --</option>
+        <option value="😊">😊 আনন্দিত</option>
+        <option value="😢">😢 দুঃখিত</option>
+        <option value="😡">😡 রাগান্বিত</option>
+        <option value="😴">😴 ক্লান্ত</option>
+      </select>
+
+      <label for="entry-text">✍️ আজকের অনুভূতি</label>
+      <textarea id="entry-text" placeholder="আপনার ডায়েরি লিখুন..."></textarea>
+
+      <button onclick="saveEntry()">💾 সেভ</button>
+      <button onclick="exportText()">⬇️ .txt ডাউনলোড</button>
+      <button onclick="exportPDF()">📄 PDF তৈরি</button>
+    </div>
+
+    <div class="card">
+      <h2>📚 পুরাতন এন্ট্রি</h2>
+      <input type="text" id="search-box" placeholder="🔍 তারিখ/মুড দিয়ে খুঁজুন..." oninput="filterEntries()" />
       <ul id="entries"></ul>
     </div>
   </div>
 
-  <!-- jsPDF CDN -->
+  <!-- html2canvas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <script>
     let entries = JSON.parse(localStorage.getItem("diaryEntries") || "[]");
 
     function checkPIN() {
-      const input = document.getElementById("pin-input").value;
+      const pin = document.getElementById("pin-input").value;
       const savedPIN = localStorage.getItem("userPIN");
 
       if (!savedPIN) {
-        if(input.trim().length < 4){
-          alert("Please set a PIN at least 4 characters long.");
-          return;
-        }
-        localStorage.setItem("userPIN", input);
-        alert("✅ PIN set successfully!");
+        if (pin.length < 4) return alert("PIN কমপক্ষে ৪ ডিজিট হতে হবে!");
+        localStorage.setItem("userPIN", pin);
+        alert("✅ PIN সেট সম্পন্ন!");
         unlockApp();
-      } else if (input === savedPIN) {
+      } else if (pin === savedPIN) {
         unlockApp();
       } else {
-        alert("❌ Wrong PIN!");
+        alert("❌ ভুল PIN!");
       }
     }
 
     function unlockApp() {
       document.getElementById("lock-screen").classList.add("hidden");
       document.getElementById("app").classList.remove("hidden");
-      showEntries();
       applyTheme();
-      setTodayDate();
+      setToday();
+      showEntries();
+      scheduleNotification();
     }
 
-    function setTodayDate(){
-      const dateInput = document.getElementById("entry-date");
-      if(!dateInput.value) {
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.value = today;
-      }
+    function setToday() {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById("entry-date").value = today;
     }
 
     function saveEntry() {
@@ -186,10 +177,7 @@
       const mood = document.getElementById("mood").value;
       const text = document.getElementById("entry-text").value.trim();
 
-      if (!date || !text) {
-        alert("Date and entry are required!");
-        return;
-      }
+      if (!date || !text) return alert("তারিখ ও অনুভূতি লিখুন!");
 
       entries.push({ date, mood, text });
       localStorage.setItem("diaryEntries", JSON.stringify(entries));
@@ -198,91 +186,84 @@
     }
 
     function showEntries(filter = "") {
-      const list = document.getElementById("entries");
-      list.innerHTML = "";
-
-      entries
-        .filter(e =>
-          e.date.includes(filter) ||
-          (e.mood && e.mood.includes(filter)) ||
-          e.text.toLowerCase().includes(filter.toLowerCase())
-        )
-        .forEach(entry => {
-          const li = document.createElement("li");
-          li.innerHTML = `<strong>${entry.date}</strong> ${entry.mood || ''}<br>${escapeHtml(entry.text)}`;
-          list.appendChild(li);
-        });
+      const ul = document.getElementById("entries");
+      ul.innerHTML = "";
+      entries.filter(e =>
+        e.date.includes(filter) || (e.mood && e.mood.includes(filter)) || e.text.includes(filter)
+      ).forEach(e => {
+        const li = document.createElement("li");
+        li.innerHTML = `<strong>${e.date}</strong> ${e.mood}<br>${e.text}`;
+        ul.appendChild(li);
+      });
     }
 
     function filterEntries() {
-      const term = document.getElementById("search-box").value.trim();
-      showEntries(term);
+      const search = document.getElementById("search-box").value.trim();
+      showEntries(search);
     }
 
-    function exportEntries() {
-      const content = entries.map(e => `Date: ${e.date} ${e.mood || ''}\n${e.text}`).join('\n\n--------------------\n\n');
-      const blob = new Blob([content], { type: "text/plain" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "digital-diary.txt";
-      link.click();
+    function exportText() {
+      const content = entries.map(e => `📅 ${e.date} ${e.mood}\n${e.text}`).join('\n\n-----------\n\n');
+      const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "digital-diary.txt";
+      a.click();
     }
 
     async function exportPDF() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
-
-      let y = 10;
-      doc.setFontSize(14);
-      doc.text("📖 Digital Diary Entries:", 10, y);
-      y += 10;
-
-      entries.forEach(entry => {
-        const text = `📅 ${entry.date} ${entry.mood || ''}\n${entry.text}`;
-        const splitText = doc.splitTextToSize(text, 180);
-        if(y + splitText.length * 10 > 280){
-          doc.addPage();
-          y = 10;
-        }
-        doc.text(splitText, 10, y);
-        y += splitText.length * 10 + 5;
+      const list = document.getElementById("entries");
+      await html2canvas(list, { scale: 2 }).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdfWidth = doc.internal.pageSize.getWidth();
+        const pdfHeight = canvas.height * pdfWidth / canvas.width;
+        doc.addImage(imgData, 'PNG', 0, 10, pdfWidth, pdfHeight);
+        doc.save("digital-diary.pdf");
       });
-
-      doc.save("digital-diary.pdf");
     }
 
     function toggleDarkMode() {
-      const isDark = document.body.classList.toggle("dark");
-      localStorage.setItem("theme", isDark ? "dark" : "light");
+      const dark = document.body.classList.toggle("dark");
+      localStorage.setItem("theme", dark ? "dark" : "light");
     }
 
     function applyTheme() {
-      const theme = localStorage.getItem("theme");
-      if (theme === "dark") {
+      if (localStorage.getItem("theme") === "dark") {
         document.body.classList.add("dark");
       }
     }
 
-    function escapeHtml(text) {
-      var map = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;'
-      };
-      return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    function requestNotification() {
+      if (Notification.permission === "granted") {
+        alert("🔔 ইতোমধ্যে অনুমতি দেওয়া আছে");
+      } else {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            alert("✅ Notification অনুমোদিত");
+          }
+        });
+      }
+    }
+
+    function scheduleNotification() {
+      if (Notification.permission === "granted") {
+        setTimeout(() => {
+          new Notification("📝 আজকের ডায়েরি লিখেছেন?", {
+            body: "সময় করে আজকের অনুভূতি লিখে রাখুন!",
+          });
+        }, 5000); // ৫ সেকেন্ড পরে (পরীক্ষার জন্য)
+      }
     }
 
     window.onload = function () {
-      applyTheme();
       const savedPIN = localStorage.getItem("userPIN");
       if (!savedPIN) {
-        document.getElementById("pin-msg").innerText = "🔐 Set your PIN for future access (min 4 chars)";
-      } else {
-        document.getElementById("pin-input").placeholder = "Enter PIN";
+        document.getElementById("pin-msg").innerText = "🔐 প্রথমবার পিন সেট করুন";
       }
-    }
+    };
   </script>
+
 </body>
 </html>
