@@ -135,7 +135,7 @@
     </div>
   </div>
 
-  <!-- html2canvas -->
+  <!-- CDN scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
@@ -214,7 +214,10 @@
     async function exportPDF() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
+
       const list = document.getElementById("entries");
+      list.style.background = "#fff";
+
       await html2canvas(list, { scale: 2 }).then(canvas => {
         const imgData = canvas.toDataURL("image/png");
         const pdfWidth = doc.internal.pageSize.getWidth();
@@ -253,7 +256,7 @@
           new Notification("📝 আজকের ডায়েরি লিখেছেন?", {
             body: "সময় করে আজকের অনুভূতি লিখে রাখুন!",
           });
-        }, 5000); // ৫ সেকেন্ড পরে (পরীক্ষার জন্য)
+        }, 5000); // পরীক্ষার জন্য ৫ সেকেন্ড পরে
       }
     }
 
